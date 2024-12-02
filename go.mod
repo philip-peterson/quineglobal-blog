@@ -16,5 +16,6 @@ require (
 require (
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/gorilla/feeds v1.2.0 // indirect
+	github.com/grokify/html-strip-tags-go v0.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 )

@@ -40,9 +40,10 @@ func page(props PageProps, children ...Node) Node {
 			Link(Rel("stylesheet"), Href(appCSSPath)),
 			Script(Src(htmxJSPath), Defer()),
 			Script(Src(appJSPath), Defer()),
+			Meta(Name("viewport"), Content("width=device-width, initial-scale=1")),
 		},
-		Body: []Node{Class("bg-indigo-600 text-gray-900"),
-			Div(Class("min-h-screen flex flex-col justify-between bg-white"),
+		Body: []Node{
+			Div(Class("blog"),
 				header(),
 				Div(Class("grow"),
 					container(true, true,
@@ -55,16 +56,13 @@ func page(props PageProps, children ...Node) Node {
 	})
 }
 
-// header bar with logo and navigation.
 func header() Node {
-	return Div(Class("bg-indigo-600 text-white shadow"),
-		container(true, false,
-			Div(Class("h-16 flex items-center justify-between"),
-				A(Href("/"), Class("inline-flex items-center text-xl font-semibold"),
-					Img(Src("/images/logo.png"), Alt("Logo"), Class("h-12 w-auto bg-white rounded-full mr-4")),
-					Text("Home"),
-				),
-			),
+	return Div(
+		Img(Src("/images/quine_global_logo.png"), Height("80")),
+		Div(Style("margin-left: 4px; margin-top: 10px;"),
+			Text("All posts by "),
+			Strong(Text("the QUINE Foundation")),
+			Text(":"),
 		),
 	)
 }
@@ -83,11 +81,14 @@ func container(padX, padY bool, children ...Node) Node {
 
 // footer with a link to the gomponents website.
 func footer() Node {
-	return Div(Class("bg-indigo-600 text-white"),
-		container(true, false,
-			Div(Class("h-16 flex items-center justify-center"),
-				A(Href("https://www.gomponents.com"), Text("www.gomponents.com")),
-			),
+	return Div(
+		A(
+			Href("/rss.xml"),
+			Text("RSS"),
+		),
+		A(
+			Href("https://www.linkedin.com/company/quine-foundation"),
+			Text("LinkedIn"),
 		),
 	)
 }
