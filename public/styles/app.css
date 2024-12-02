@@ -1,0 +1,125 @@
+html, body {
+    padding: 0;
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+    background: #00427e;
+}
+
+figure > img {
+	width: 100%;
+}
+
+figure > figcaption {
+	text-align: center;
+	color: #555;
+	font-style: italic;
+}
+
+.footer {
+	display: flex;
+	justify-content: center;
+	margin-top: 1em;
+	color: white;
+	margin-bottom: 17em;
+	align-items: center;
+}
+
+.footer > a {
+	display: block;
+	padding: 1em;
+}
+
+.footer > a:link, .footer > a:visited {
+	color: #eee;
+}
+
+.footer > a:hover {
+	color: #fffd92;
+}
+
+.footer > .spacer {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+a, a:link, a:visited {
+	color: #3b7fff;
+}
+
+.blog {
+    max-width: 900px;
+    background: #f7f7f7;
+    margin: 0 auto;
+    padding: 50px;
+    margin-top: 2em;
+}
+
+.markdown {
+    max-width: 800px;
+}
+
+.markdown h1 {
+    text-align: center;
+}
+
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+    text-align: left;
+}
+
+.markdown blockquote {
+    background: #fafafa;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 5px 10px 5px 35px;
+    position: relative;
+    overflow: hidden;
+}
+
+.markdown blockquote:before,
+.markdown blockquote:after {
+    content: 'â€œ';
+    position: absolute;
+    left: 5px;
+    top: 10px;
+    line-height: 50px;
+    font-size: 80px;
+    color: rgba(0, 0, 0, 0.3);
+    font-family: Arial, sans-serif;
+}
+
+.markdown blockquote:after {
+    content: 'â€';
+    left: initial;
+    top: initial;
+    line-height: 0px;
+    bottom: 0px;
+    right: 0px;
+}
+
+.markdown img {
+    display: block;
+    margin: 10px auto;
+    max-width: 100%;
+}
+
+.markdown img + code {
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.markdown code {
+    background: #313c51;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    display: inline-block;
+    width: 100%;
+    overflow: auto;
+}
