@@ -51,7 +51,7 @@ func PostReader(post model.QuinePost, now time.Time) Node {
 		Div(
 			Class("markdown"),
 			H1(
-				Text("Screws and Software"),
+				Text(post.Title),
 			),
 			Div(post.Content...),
 		),

@@ -152,7 +152,6 @@ func Home(r chi.Router, db thingsGetter) {
 
 func PostFetcherErrorer(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("in fetcher/errorer")
 		postID := chi.URLParam(r, "postID")
 
 		post, found := lo.Find(posts.AllPosts, func(q model.QuinePost) bool {
@@ -160,11 +159,8 @@ func PostFetcherErrorer(next http.Handler) http.Handler {
 		})
 
 		if !found {
-			err := fmt.Errorf("404 post not found")
-			if err != nil {
-				http.Error(w, http.StatusText(404), 404)
-				return
-			}
+			http.Error(w, "404, post not found", 404)
+			return
 		}
 
 		ctx := context.WithValue(r.Context(), postCtxKey{}, post)
