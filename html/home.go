@@ -1,6 +1,7 @@
 package html
 
 import (
+	"fmt"
 	"time"
 
 	. "maragu.dev/gomponents"
@@ -25,17 +26,34 @@ func HomePage(props PageProps, posts []model.QuinePost, now time.Time) Node {
 func Posts(posts []model.QuinePost, now time.Time) Node {
 	return Group{
 		Map(posts, func(t model.QuinePost) Node {
-			return Li(
-				Class("blog-post"),
-				H1(
-					A(
-						Href("/post/screws-and-software"),
-						Text("Screws and Software"),
-					),
-				),
-				P(Text("What can screws teach us about coding?")),
-				A(Href("/post/screws-and-software"), Text("Read post")),
-			)
+			return PostTeaser(t, now)
 		}),
 	}
+}
+
+func PostTeaser(post model.QuinePost, now time.Time) Node {
+	return Div(
+		Class("blog-post"),
+		H1(
+			A(
+				Href(fmt.Sprintf("/post/%s", post.Id)),
+				Text(post.Title),
+			),
+		),
+		P(Text(post.Teaser)),
+		A(Href(fmt.Sprintf("/post/%s", post.Id)), Text("Read post")),
+	)
+}
+
+func PostReader(post model.QuinePost, now time.Time) Node {
+	return Div(
+		Class("blog"),
+		Div(
+			Class("markdown"),
+			H1(
+				Text("Screws and Software"),
+			),
+			Div(post.Content...),
+		),
+	)
 }

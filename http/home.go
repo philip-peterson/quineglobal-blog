@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	feeds "github.com/gorilla/feeds"
 	strip "github.com/grokify/html-strip-tags-go"
+	lo "github.com/samber/lo"
 	. "maragu.dev/gomponents"
 	hx "maragu.dev/gomponents-htmx/http"
 	ghttp "maragu.dev/gomponents/http"
@@ -32,6 +33,26 @@ type thingsGetter interface {
 // 	return r
 // }
 
+type HttpErrorResponse struct {
+	ErrorMessage string
+}
+
+type NotFound HttpErrorResponse
+
+func (a NotFound) StatusCode() int {
+	return 404
+}
+
+func (a NotFound) Error() string {
+	return a.ErrorMessage
+}
+
+type errorWithStatusCode interface {
+	StatusCode() int
+}
+
+var _ errorWithStatusCode = NotFound{}
+
 // Home handler for the home page, as well as HTMX partial for getting things.
 func Home(r chi.Router, db thingsGetter) {
 	r.Get("/", ghttp.Adapt(func(w http.ResponseWriter, r *http.Request) (Node, error) {
@@ -43,6 +64,41 @@ func Home(r chi.Router, db thingsGetter) {
 
 		return html.HomePage(html.PageProps{}, allPosts, time.Now()), nil
 	}))
+
+	// r.Get("/post", ghttp.Adapt(func(rw http.ResponseWriter, r *http.Request) (Node, error) {
+	// 	postID := chi.URLParam(r, "postID")
+
+	// 	post, found := lo.Find(posts.AllPosts, func(q model.QuinePost) bool {
+	// 		return q.Id == postID
+	// 	})
+	// 	if !found {
+	// 		fmt.Println("ok really not found")
+	// 		return nil, NotFound{}
+	// 	}
+
+	// 	return html.PostPage(html.PageProps{}, post, time.Now()), nil
+	// }))
+
+	r.Route("/post", func(r chi.Router) {
+		r.With(PostFetcherErrorer).Get("/{postID}", ghttp.Adapt(func(rw http.ResponseWriter, r *http.Request) (Node, error) {
+			// postID := chi.URLParam(r, "postID")
+
+			ctx := r.Context()
+			post := ctx.Value(postCtxKey{}).(model.QuinePost)
+
+			fmt.Printf("post %v\n", post)
+
+			// post, found := lo.Find(posts.AllPosts, func(q model.QuinePost) bool {
+			// 	return q.Id == postID
+			// })
+			// if !found {
+			// 	fmt.Println("ok really not found")
+			// 	return nil, NotFound{}
+			// }
+
+			return html.PostPage(html.PageProps{}, post, time.Now()), nil
+		}))
+	})
 
 	r.Get("/rss.xml", func(rw http.ResponseWriter, r *http.Request) {
 		rw.Header().Set("Content-Type", "text/xml")
@@ -93,3 +149,27 @@ func Home(r chi.Router, db thingsGetter) {
 		rw.Write([]byte(rss))
 	})
 }
+
+func PostFetcherErrorer(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("in fetcher/errorer")
+		postID := chi.URLParam(r, "postID")
+
+		post, found := lo.Find(posts.AllPosts, func(q model.QuinePost) bool {
+			return q.Id == postID
+		})
+
+		if !found {
+			err := fmt.Errorf("404 post not found")
+			if err != nil {
+				http.Error(w, http.StatusText(404), 404)
+				return
+			}
+		}
+
+		ctx := context.WithValue(r.Context(), postCtxKey{}, post)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
+type postCtxKey struct{}

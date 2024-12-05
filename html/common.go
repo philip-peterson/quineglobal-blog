@@ -32,6 +32,8 @@ func page(props PageProps, children ...Node) Node {
 		appJSPath = getHashedPath("public/scripts/app.js")
 	})
 
+	fmt.Printf("page is %v", props.Title)
+
 	return HTML5(HTML5Props{
 		Title:       props.Title,
 		Description: props.Description,

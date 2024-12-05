@@ -11,6 +11,7 @@ import (
 var lookWhereYoureHeaded = model.QuinePost{
 	Title:   "Look Where You're Headed",
 	Id:      "look-where-youre-headed",
+	Teaser:  "How attitude can dictate our outcome",
 	Created: time.Date(2024, 8, 25, 0, 23, 26, 0, time.UTC),
 	Updated: time.Date(2024, 8, 25, 0, 23, 26, 0, time.UTC),
 	Content: []Node{
