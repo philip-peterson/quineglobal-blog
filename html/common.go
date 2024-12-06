@@ -21,6 +21,7 @@ var appCSSPath, appJSPath, htmxJSPath string
 type PageProps struct {
 	Title       string
 	Description string
+	Header      bool
 }
 
 // page layout with header, footer, and container to restrict width and set base padding.
@@ -34,6 +35,11 @@ func page(props PageProps, children ...Node) Node {
 
 	fmt.Printf("page is %v", props.Title)
 
+	maybeHeader := Group{}
+	if props.Header {
+		maybeHeader = append(maybeHeader, header())
+	}
+
 	return HTML5(HTML5Props{
 		Title:       props.Title,
 		Description: props.Description,
@@ -44,16 +50,14 @@ func page(props PageProps, children ...Node) Node {
 			Script(Src(appJSPath), Defer()),
 			Meta(Name("viewport"), Content("width=device-width, initial-scale=1")),
 		},
-		Body: []Node{
+		Body: Group{
 			Div(Class("blog"),
-				header(),
-				Div(Class("grow"),
-					container(true, true,
-						Group(children),
-					),
+				maybeHeader,
+				Div(
+					Group(children),
 				),
-				footer(),
 			),
+			actualFooter(),
 		},
 	})
 }
@@ -69,28 +73,33 @@ func header() Node {
 	)
 }
 
-// container restricts the width and sets padding.
-func container(padX, padY bool, children ...Node) Node {
+func actualFooter() Node {
 	return Div(
-		Classes{
-			"max-w-7xl mx-auto":     true,
-			"px-4 md:px-8 lg:px-16": padX,
-			"py-4 md:py-8":          padY,
-		},
-		Group(children),
-	)
-}
-
-// footer with a link to the gomponents website.
-func footer() Node {
-	return Div(
+		Class("footer"),
 		A(
-			Href("/rss.xml"),
-			Text("RSS"),
+			Href("/"),
+			Text("Home"),
+		),
+		Div(
+			Class("spacer"),
 		),
 		A(
-			Href("https://www.linkedin.com/company/quine-foundation"),
-			Text("LinkedIn"),
+			Href("/about"),
+			Text("About"),
+		),
+		Div(
+			Class("spacer"),
+		),
+		A(
+			Href("/rss.xml"),
+			Text("RSS Feed"),
+		),
+		Div(
+			Class("spacer"),
+		),
+		A(
+			Href("/credits"),
+			Text("Credits"),
 		),
 	)
 }

@@ -3,7 +3,10 @@ html, body {
     margin: 0;
 
     font-family: Arial, sans-serif;
-    background: #00427e;
+    background: rgb(112,26,189);
+    background: linear-gradient(0deg, rgba(112,26,189,1) 25%, rgba(0,173,255,1) 100%); 
+    background-attachment: fixed;
+    height: 100%;
 }
 
 figure > img {
@@ -49,7 +52,7 @@ a, a:link, a:visited {
 
 .blog {
     max-width: 900px;
-    background: #f7f7f7;
+    background: rgb(247, 247, 247);
     margin: 0 auto;
     padding: 50px;
     margin-top: 2em;
@@ -57,6 +60,7 @@ a, a:link, a:visited {
 
 .markdown {
     max-width: 800px;
+    margin: 0 auto;
 }
 
 .markdown h1 {
