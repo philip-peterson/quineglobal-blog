@@ -4,8 +4,10 @@ go 1.23
 
 require (
 	github.com/go-chi/chi/v5 v5.1.0
-	github.com/go-chi/render v1.0.3
-	golang.org/x/sync v0.9.0
+	github.com/gorilla/feeds v1.2.0
+	github.com/grokify/html-strip-tags-go v0.1.0
+	github.com/samber/lo v1.47.0
+	golang.org/x/sync v0.10.0
 	maragu.dev/env v0.2.0
 	maragu.dev/gomponents v1.0.0
 	maragu.dev/gomponents-htmx v0.6.1
@@ -14,10 +16,6 @@ require (
 )
 
 require (
-	github.com/ajg/form v1.5.1 // indirect
-	github.com/gorilla/feeds v1.2.0 // indirect
-	github.com/grokify/html-strip-tags-go v0.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/samber/lo v1.47.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 )
