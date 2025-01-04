@@ -7,11 +7,6 @@ import (
 	g "maragu.dev/gomponents"
 )
 
-// Thing with a name.
-type Thing struct {
-	Name string
-}
-
 type QuinePost struct {
 	Title       string
 	Id          string // used as guid in rss, id in atom

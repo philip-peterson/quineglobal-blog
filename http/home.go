@@ -23,19 +23,6 @@ import (
 	"app/posts"
 )
 
-type thingsGetter interface {
-	GetThings(ctx context.Context) ([]model.Thing, error)
-}
-
-// func rssRouter() chi.Router {
-// 	r := chi.NewRouter()
-// 	r.Use(render.SetContentType(render.ContentTypeJSON))
-// 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-// 		w.Write([]byte("admin: index"))
-// 	})
-// 	return r
-// }
-
 type HttpErrorResponse struct {
 	ErrorMessage string
 }
