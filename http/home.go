@@ -5,11 +5,14 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"strings"
 	"time"
+
+	netHtml "golang.org/x/net/html"
 
 	"github.com/go-chi/chi/v5"
 	feeds "github.com/gorilla/feeds"
-	strip "github.com/grokify/html-strip-tags-go"
 	lo "github.com/samber/lo"
 	. "maragu.dev/gomponents"
 	hx "maragu.dev/gomponents-htmx/http"
@@ -127,12 +130,15 @@ func Home(r chi.Router, db thingsGetter) {
 			}
 
 			body := bodyBuffer.String()
-			bodyStripped := strip.StripTags(body)
+			description, err := htmlToText(body)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to render description")
+			}
 
 			feed.Items = append(feed.Items, &feeds.Item{
 				Title:       p.Title,
 				Link:        &feeds.Link{Href: fmt.Sprintf("https://blog.quinefoundation.com/post/%s", p.Id)},
-				Description: bodyStripped,
+				Description: description,
 				Author:      &author,
 				Created:     p.Created,
 				Updated:     p.Updated,
@@ -169,3 +175,34 @@ func PostFetcherErrorer(next http.Handler) http.Handler {
 }
 
 type postCtxKey struct{}
+
+func htmlToText(body string) (string, error) {
+	r := strings.NewReader(body)
+	doc, err := netHtml.Parse(r)
+	if err != nil {
+		return "", err
+	}
+
+	var out bytes.Buffer
+
+	walk(doc, &out)
+
+	return out.String(), nil
+}
+
+func walk(node *netHtml.Node, out *bytes.Buffer) {
+	if node.Type == netHtml.ElementNode && (node.Data == "p" || node.Data == "div") {
+		out.WriteString("\n")
+	}
+	if node.Type == netHtml.TextNode {
+		out.WriteString(node.Data)
+	} else {
+		children := node.ChildNodes()
+		for c := range children {
+			walk(c, out)
+		}
+	}
+	if node.Type == netHtml.ElementNode && (node.Data == "p" || node.Data == "div") {
+		out.WriteString("\n")
+	}
+}
