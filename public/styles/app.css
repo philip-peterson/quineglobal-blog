@@ -9,6 +9,12 @@ html, body {
     height: 100%;
 }
 
+figure {
+	display: block;
+	margin-top: 3em;
+	margin-bottom: 3em;
+}
+
 figure > img {
 	width: 100%;
 }
