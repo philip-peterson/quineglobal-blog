@@ -56,6 +56,10 @@ var screwsAndSoftware = model.QuinePost{
 		P(Text("Footnotes:")),
 		P(Text("----")),
 
-		P(Text("1. For our purposes, it’s simplest to call them screws, but actually we are speaking of bolts, and you can watch the manufacturing process [in this video](https://www.youtube.com/watch?v=3kxcw08p_oY).")),
+		P(
+			Text("1. For our purposes, it’s simplest to call them screws, but actually we are speaking of bolts, and you can watch the manufacturing process "),
+			A(Href("https://www.youtube.com/watch?v=3kxcw08p_oY"), Text("in this video")),
+			Text("."),
+		),
 	},
 }

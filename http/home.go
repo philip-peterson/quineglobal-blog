@@ -68,6 +68,14 @@ func Home(r chi.Router, db thingsGetter) {
 		return html.HomePage(html.PageProps{}, allPosts, time.Now()), nil
 	}))
 
+	r.Get("/credits", ghttp.Adapt(func(w http.ResponseWriter, r *http.Request) (Node, error) {
+		return html.CreditsPage(html.PageProps{}), nil
+	}))
+
+	r.Get("/about", ghttp.Adapt(func(w http.ResponseWriter, r *http.Request) (Node, error) {
+		return html.AboutPage(html.PageProps{}), nil
+	}))
+
 	r.Route("/post", func(r chi.Router) {
 		r.Get("/", func(writer http.ResponseWriter, req *http.Request) {
 			// redirect em from /post to /
@@ -86,19 +94,28 @@ func Home(r chi.Router, db thingsGetter) {
 	r.Get("/rss.xml", func(rw http.ResponseWriter, r *http.Request) {
 		rw.Header().Set("Content-Type", "text/xml")
 
-		now := time.Now()
+		var latest time.Time
 
-		author := feeds.Author{Name: "Philip Peterson", Email: "philip@quineglobal.com"}
+		allPosts := posts.AllPosts
+
+		for _, p := range allPosts {
+			if p.Created.After(latest) {
+				latest = p.Created
+			}
+			if p.Updated.After(latest) {
+				latest = p.Updated
+			}
+		}
+
+		author := feeds.Author{Name: "Philip", Email: "philip@quineglobal.com"}
 
 		feed := &feeds.Feed{
 			Title:       "QUINE Global Organization – Solving yesterday's problems for tomorrow – Global health, business, and software blog",
 			Link:        &feeds.Link{Href: "https://blog.quineglobal.com/"},
 			Description: "Software development, global health, and business insights",
 			Author:      &author,
-			Created:     now,
+			Created:     latest,
 		}
-
-		allPosts := posts.AllPosts
 
 		feed.Items = []*feeds.Item{}
 
@@ -171,7 +188,7 @@ func htmlToText(body string) (string, error) {
 }
 
 func walk(node *netHtml.Node, out *bytes.Buffer) {
-	if node.Type == netHtml.ElementNode && (node.Data == "p" || node.Data == "div") {
+	if node.Type == netHtml.ElementNode && (node.Data == "p" || node.Data == "div" || node.Data == "li") {
 		out.WriteString("\n")
 	}
 	if node.Type == netHtml.TextNode {
@@ -182,7 +199,7 @@ func walk(node *netHtml.Node, out *bytes.Buffer) {
 			walk(c, out)
 		}
 	}
-	if node.Type == netHtml.ElementNode && (node.Data == "p" || node.Data == "div") {
+	if node.Type == netHtml.ElementNode && (node.Data == "p" || node.Data == "div" || node.Data == "li") {
 		out.WriteString("\n")
 	}
 }
