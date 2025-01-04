@@ -18,6 +18,6 @@ func (s *Server) setupRoutes() {
 			Static(r)
 		})
 
-		Home(r, s.db)
+		Home(r)
 	})
 }
