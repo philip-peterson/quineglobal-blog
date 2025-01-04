@@ -33,8 +33,6 @@ func page(props PageProps, children ...Node) Node {
 		appJSPath = getHashedPath("public/scripts/app.js")
 	})
 
-	fmt.Printf("page is %v", props.Title)
-
 	maybeHeader := Group{}
 	if props.Header {
 		maybeHeader = append(maybeHeader, header())

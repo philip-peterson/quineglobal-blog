@@ -68,39 +68,19 @@ func Home(r chi.Router, db thingsGetter) {
 		return html.HomePage(html.PageProps{}, allPosts, time.Now()), nil
 	}))
 
-	// r.Get("/post", ghttp.Adapt(func(rw http.ResponseWriter, r *http.Request) (Node, error) {
-	// 	postID := chi.URLParam(r, "postID")
-
-	// 	post, found := lo.Find(posts.AllPosts, func(q model.QuinePost) bool {
-	// 		return q.Id == postID
-	// 	})
-	// 	if !found {
-	// 		fmt.Println("ok really not found")
-	// 		return nil, NotFound{}
-	// 	}
-
-	// 	return html.PostPage(html.PageProps{}, post, time.Now()), nil
-	// }))
-
 	r.Route("/post", func(r chi.Router) {
-		r.With(PostFetcherErrorer).Get("/{postID}", ghttp.Adapt(func(rw http.ResponseWriter, r *http.Request) (Node, error) {
-			// postID := chi.URLParam(r, "postID")
+		r.Get("/", func(writer http.ResponseWriter, req *http.Request) {
+			// redirect em from /post to /
+			http.Redirect(writer, req, "/", http.StatusTemporaryRedirect)
+		})
 
-			ctx := r.Context()
-			post := ctx.Value(postCtxKey{}).(model.QuinePost)
+		r.With(PostFetcherErrorer).
+			Get("/{postID}", ghttp.Adapt(func(rw http.ResponseWriter, r *http.Request) (Node, error) {
+				ctx := r.Context()
+				post := ctx.Value(postCtxKey{}).(model.QuinePost)
 
-			fmt.Printf("post %v\n", post)
-
-			// post, found := lo.Find(posts.AllPosts, func(q model.QuinePost) bool {
-			// 	return q.Id == postID
-			// })
-			// if !found {
-			// 	fmt.Println("ok really not found")
-			// 	return nil, NotFound{}
-			// }
-
-			return html.PostPage(html.PageProps{}, post, time.Now()), nil
-		}))
+				return html.PostPage(html.PageProps{}, post, time.Now()), nil
+			}))
 	})
 
 	r.Get("/rss.xml", func(rw http.ResponseWriter, r *http.Request) {

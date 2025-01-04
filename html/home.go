@@ -62,7 +62,9 @@ func PostReader(post model.QuinePost, now time.Time) Node {
 			P(
 				Style("margin-top: 3em"),
 				Text(footerSegue),
-				Text(", you can follow Quine's thinkpieces via "),
+				Text(", you can "),
+				A(Href("http://blog.quineglobal.com/rss.xml"), Text("follow")),
+				Text(" our thinkpieces via "),
 				A(Href("http://blog.quineglobal.com/rss.xml"), Text("RSS")),
 				Text(", or you can "),
 				A(Href("https://www.linkedin.com/company/quine-global"), Text("find us on LinkedIn")),
