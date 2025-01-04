@@ -67,7 +67,7 @@ func header() Node {
 		Img(Src("/images/quine_global_logo.png"), Height("80")),
 		Div(Style("margin-left: 4px; margin-top: 10px;"),
 			Text("All posts by "),
-			Strong(Text("the QUINE Foundation")),
+			Strong(Text("QUINE Global")),
 			Text(":"),
 		),
 	)

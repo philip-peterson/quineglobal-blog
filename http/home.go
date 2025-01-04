@@ -111,8 +111,8 @@ func Home(r chi.Router, db thingsGetter) {
 		author := feeds.Author{Name: "Philip Peterson", Email: "philip@quineglobal.com"}
 
 		feed := &feeds.Feed{
-			Title:       "QUINE Foundation software, global health, and business blog",
-			Link:        &feeds.Link{Href: "https://blog.quinefoundation.com/"},
+			Title:       "QUINE Global Organization – Solving yesterday's problems for tomorrow – Global health, business, and software blog",
+			Link:        &feeds.Link{Href: "https://blog.quineglobal.com/"},
 			Description: "Software development, global health, and business insights",
 			Author:      &author,
 			Created:     now,
@@ -137,7 +137,7 @@ func Home(r chi.Router, db thingsGetter) {
 
 			feed.Items = append(feed.Items, &feeds.Item{
 				Title:       p.Title,
-				Link:        &feeds.Link{Href: fmt.Sprintf("https://blog.quinefoundation.com/post/%s", p.Id)},
+				Link:        &feeds.Link{Href: fmt.Sprintf("https://blog.quineglobal.com/post/%s", p.Id)},
 				Description: description,
 				Author:      &author,
 				Created:     p.Created,

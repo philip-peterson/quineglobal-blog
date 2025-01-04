@@ -10,7 +10,7 @@ import (
 )
 
 func PostPage(props PageProps, post model.QuinePost, now time.Time) Node {
-	props.Title = post.Title + " | QUINE Foundation Blog"
+	props.Title = post.Title + " | QUINE"
 
 	return page(props,
 		Div(

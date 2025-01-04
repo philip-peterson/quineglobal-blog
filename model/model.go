@@ -13,10 +13,11 @@ type Thing struct {
 }
 
 type QuinePost struct {
-	Title   string
-	Id      string // used as guid in rss, id in atom
-	Updated time.Time
-	Created time.Time
-	Teaser  string
-	Content []g.Node
+	Title       string
+	Id          string // used as guid in rss, id in atom
+	Updated     time.Time
+	Created     time.Time
+	Teaser      string
+	Content     []g.Node
+	FooterSegue string
 }

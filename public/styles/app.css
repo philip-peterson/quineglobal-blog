@@ -127,7 +127,7 @@ a, a:link, a:visited {
 .markdown code {
     background: #313c51;
     color: white;
-    padding: 5px;
+    padding: 14px 10px;
     border-radius: 3px;
     display: inline-block;
     width: 100%;

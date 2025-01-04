@@ -12,7 +12,7 @@ import (
 
 // HomePage is the front page of the app.
 func HomePage(props PageProps, posts []model.QuinePost, now time.Time) Node {
-	props.Title = "QUINE Foundation Blog"
+	props.Title = "QUINE Global Organization – Solving yesterday's problems for tomorrow – Global health, business, and software blog"
 	props.Header = true
 
 	return page(props,
@@ -41,12 +41,17 @@ func PostTeaser(post model.QuinePost, now time.Time) Node {
 				Text(post.Title),
 			),
 		),
-		P(Text(post.Teaser)),
+		P(Text(post.Teaser), Text("…")),
 		A(Href(fmt.Sprintf("/post/%s", post.Id)), Text("Read post")),
 	)
 }
 
 func PostReader(post model.QuinePost, now time.Time) Node {
+	footerSegue := post.FooterSegue
+	if footerSegue == "" {
+		footerSegue = "If you liked this post"
+	}
+
 	return Div(
 		Div(
 			Class("markdown"),
@@ -56,10 +61,11 @@ func PostReader(post model.QuinePost, now time.Time) Node {
 			Div(post.Content...),
 			P(
 				Style("margin-top: 3em"),
-				Text("If you liked this post, you can follow Quine's thinkpieces via "),
-				A(Href("http://blog.quinefoundation.com/rss.xml"), Text("RSS")),
+				Text(footerSegue),
+				Text(", you can follow Quine's thinkpieces via "),
+				A(Href("http://blog.quineglobal.com/rss.xml"), Text("RSS")),
 				Text(", or you can "),
-				A(Href("https://www.linkedin.com/company/quine-foundation"), Text("find us on LinkedIn")),
+				A(Href("https://www.linkedin.com/company/quine-global"), Text("find us on LinkedIn")),
 				Text("!"),
 			),
 		),
