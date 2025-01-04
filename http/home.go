@@ -108,7 +108,7 @@ func Home(r chi.Router, db thingsGetter) {
 
 		now := time.Now()
 
-		author := feeds.Author{Name: "Philip Peterson", Email: "peterson@sent.com"}
+		author := feeds.Author{Name: "Philip Peterson", Email: "philip@quineglobal.com"}
 
 		feed := &feeds.Feed{
 			Title:       "QUINE Foundation software, global health, and business blog",
