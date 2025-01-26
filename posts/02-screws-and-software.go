@@ -23,7 +23,7 @@ var screwsAndSoftware = model.QuinePost{
 		P(Figure(
 			A(
 				Href("https://www.youtube.com/watch?v=3kxcw08p_oY"),
-				Img(Src("https://i3.ytimg.com/vi/3kxcw08p_oY/hqdefault.jpg"), Alt("Youtube video about how bolts are made")),
+				Img(Src("https://i3.ytimg.com/vi/3kxcw08p_oY/hqdefault.jpg"), Width("480"), Height("360"), Alt("Youtube video about how bolts are made")),
 			),
 			FigCaption(Text("How It's Made: Nuts and Bolts")),
 		)),
@@ -33,7 +33,7 @@ var screwsAndSoftware = model.QuinePost{
 		P(Text("Luckily, there is a solution: heat. Since metal is in many ways a kind of crystal, the increased motion of the atoms with heat allows the metal to recrystallize. Regions of high stress and high internal torque are allowed to reduce and even disappear. (This is one of the rare cases in life where two wrongs can make a right.) Once the screws have been heated, they are returned to normal temperature, and are significantly stronger than before. Now, they are ready to be used in projects.")),
 
 		P(Figure(
-			A(Href("https://en.wikipedia.org/wiki/Recovery_(metallurgy)#Process"), Img(Src("https://upload.wikimedia.org/wikipedia/commons/3/38/Polygonization_animation.gif"), Alt("Image illustrating that several opposite defects may join to cancel each other out in a metal grain structure."))),
+			A(Href("https://en.wikipedia.org/wiki/Recovery_(metallurgy)#Process"), Img(Src("https://upload.wikimedia.org/wikipedia/commons/3/38/Polygonization_animation.gif"), Width("522"), Height("300"), Alt("Image illustrating that several opposite defects may join to cancel each other out in a metal grain structure."))),
 
 			FigCaption(Text("When two opposite dislocations are encouraged to meet up, they cancel out.")),
 		)),
