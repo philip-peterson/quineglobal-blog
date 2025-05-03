@@ -94,7 +94,7 @@ func Home(r chi.Router) {
 			}
 		}
 
-		author := feeds.Author{Name: "Philip", Email: "philip@quinefoundation.com"}
+		author := feeds.Author{Name: "Quine", Email: "quine@fastmail.com"}
 
 		feed := &feeds.Feed{
 			Title:       "QUINE Global Organization – Solving yesterday's problems for tomorrow – Global health, business, and software blog",

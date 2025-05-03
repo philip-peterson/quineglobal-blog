@@ -36,7 +36,7 @@ func AboutPage(props PageProps) Node {
 				Text("Would you like to join us? You can "),
 				A(Href("https://www.linkedin.com/company/quine-global"), Text("follow us on LinkedIn")),
 				Text(", or "),
-				A(Href("mailto:philip@quinefoundation.com"), Text("email the author.")),
+				A(Href("mailto:quine@fastmail.com"), Text("email the author.")),
 			),
 		),
 	)

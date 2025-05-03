@@ -15,12 +15,6 @@ func CreditsPage(props PageProps) Node {
 				Text("Roboto font is provided by Google and authored by Christian Robertson. "),
 				A(Href("https://blog.quineglobal.com/static/fonts/LICENSE.txt"), Text("License here.")),
 			),
-
-			P(
-				Text("Blog post content authored by "),
-				A(Href("mailto:philip@quinefoundation.com"), Text("Philip")),
-				Text("."),
-			),
 		),
 	)
 }
