@@ -4,7 +4,7 @@ benchmark:
 
 .PHONY: build-docker
 build-docker:
-	docker build --platform linux/amd64,linux/arm64 . -t quineglobal/blog-quine
+	docker build --platform linux/amd64 . -t quineglobal/blog-quine
 
 .PHONY: publish-docker
 publish-docker:
