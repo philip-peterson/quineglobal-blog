@@ -8,4 +8,5 @@ var AllPosts []model.QuinePost = []model.QuinePost{
 	declarativeStateless,
 	whatIsQuine,
 	voting1789,
+	netua,
 }
