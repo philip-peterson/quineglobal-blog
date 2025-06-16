@@ -7,4 +7,5 @@ var AllPosts []model.QuinePost = []model.QuinePost{
 	screwsAndSoftware,
 	declarativeStateless,
 	whatIsQuine,
+	netua,
 }
