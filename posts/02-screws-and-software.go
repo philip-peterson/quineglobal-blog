@@ -54,7 +54,13 @@ var screwsAndSoftware = model.QuinePost{
 		P(Text("If we can add even a low-effort refactor phase in our development cycle, we can consistently cause these sticking points to be relaxed, making our next iteration faster and more effective. The next time you are planning a project, I would recommend to try budgeting at least 15% of time to performing refactors and micro-rewrites, and see how the project velocity responds.")),
 
 		P(Text("Footnotes:")),
-		P(Text("----")),
+		Div(
+			Class("post-divider"),
+			Span(Class("circle")),
+			Span(Class("circle")),
+			Span(Class("circle")),
+			Span(Class("circle")),
+		),
 
 		P(
 			Text("1. For our purposes, it’s simplest to call them screws, but actually we are speaking of bolts, and you can watch the manufacturing process "),

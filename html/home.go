@@ -16,11 +16,8 @@ func HomePage(props PageProps, posts []model.QuinePost, now time.Time) Node {
 	props.Header = true
 
 	return page(props,
-		Div(Class("prose prose-indigo prose-lg md:prose-xl"),
-			Div(
-				Posts(posts, now),
-			),
-		),
+		ComputingTicker(),
+		Posts(posts, now),
 	)
 }
 
@@ -33,16 +30,18 @@ func Posts(posts []model.QuinePost, now time.Time) Node {
 }
 
 func PostTeaser(post model.QuinePost, now time.Time) Node {
-	return Div(
-		Class("blog-post"),
-		H1(
-			A(
-				Href(fmt.Sprintf("/post/%s", post.Id)),
-				Text(post.Title),
-			),
+	url := fmt.Sprintf("/post/%s", post.Id)
+	return A(
+		Class("post-teaser"),
+		Href(url),
+		Time(
+			Attr("datetime", post.Created.Format(time.RFC3339)),
+			Class("post-date"),
+			Text(post.Created.Format("January 2006")),
 		),
-		P(Text(post.Teaser), Text("…")),
-		A(Href(fmt.Sprintf("/post/%s", post.Id)), Text("Read post")),
+		H2(Text(post.Title)),
+		P(Class("teaser"), Text(post.Teaser), Text("…")),
+		Span(Class("read-more"), Text("Read →")),
 	)
 }
 
@@ -70,6 +69,59 @@ func PostReader(post model.QuinePost, now time.Time) Node {
 				A(Href("https://www.linkedin.com/company/quine-global"), Text("find us on LinkedIn")),
 				Text("!"),
 			),
+		),
+	)
+}
+
+// ComputingTicker renders a scrolling marquee of delightfully nonsensical
+// computing / Lisp-flavored facts on the home page.
+func ComputingTicker() Node {
+	facts := []string{
+		`(cons '(4) '(3)) == '(4 3)`,
+		`((lambda (x) x) 'quine) == 'quine`,
+		`(car (cdr '(a b c))) => b`,
+		`(append '() '(x y)) == '(x y)`,
+		`(map (lambda (x) (* x x)) '(1 2 3)) == '(1 4 9)`,
+		`'(this is not evaluated)`,
+		`(eq? (list) '()) => #f`,
+		`(+ 40 2) == 42`,
+		"`(1 ,@'(2 3) 4) => (1 2 3 4)`",
+		`quines output their own source code`,
+		`(eval (read "(+ 1 1)")) => 2`,
+		`(omega (lambda (x) (x x))) never returns`,
+	}
+
+	sep := " • "
+
+	// Split facts roughly in half for two scrolling lines
+	mid := (len(facts) + 1) / 2
+	row1Facts := facts[:mid]
+	row2Facts := facts[mid:]
+
+	joinFacts := func(fs []string) string {
+		s := ""
+		for i, f := range fs {
+			if i > 0 {
+				s += sep
+			}
+			s += f
+		}
+		return s
+	}
+
+	// Duplicate each row's content for seamless scrolling
+	row1 := joinFacts(row1Facts) + sep
+	row2 := joinFacts(row2Facts) + sep
+
+	return Div(
+		Class("computing-ticker"),
+		Div(
+			Class("computing-ticker-row"),
+			Div(Class("computing-ticker-inner"), Span(Text(row1)), Span(Text(row1))),
+		),
+		Div(
+			Class("computing-ticker-row"),
+			Div(Class("computing-ticker-inner"), Span(Text(row2)), Span(Text(row2))),
 		),
 	)
 }

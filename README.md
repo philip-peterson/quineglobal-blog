@@ -1,97 +1,48 @@
-# gomponents-starter-kit
+# QUINE Global Blog
 
-<img src="logo.png" alt="Logo" width="300" align="right">
+A small Go web application serving the QUINE Global blog at [blog.quineglobal.com](https://blog.quineglobal.com).
 
-[![GoDoc](https://pkg.go.dev/badge/github.com/maragudk/gomponents-starter-kit)](https://pkg.go.dev/github.com/maragudk/gomponents-starter-kit)
-[![Go](https://github.com/maragudk/gomponents-starter-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/maragudk/gomponents-starter-kit/actions/workflows/ci.yml)
-[![Go](https://github.com/maragudk/gomponents-starter-kit/actions/workflows/cd.yml/badge.svg)](https://github.com/maragudk/gomponents-starter-kit/actions/workflows/cd.yml)
+Built with [gomponents](https://www.gomponents.com/) and HTMX.
 
-A starter kit for building a web app with gomponents, HTMX, and TailwindCSS in Go.
+## Running locally
 
-Made with ✨sparkles✨ by [maragu](https://www.maragu.dev/).
+### Prerequisites
 
-Does your company depend on this project? [Contact me at markus@maragu.dk](mailto:markus@maragu.dk?Subject=Supporting%20your%20project) to discuss options for a one-time or recurring invoice to ensure its continued thriving.
+- Go 1.23 or newer
 
-## Getting started
+### Start the development server
 
-The easiest way to get started is to [Use this template](https://github.com/new?template_name=gomponents-starter-kit&template_owner=maragudk) to create a new repository. Or you could clone this repository the traditional way:
-
-```shell
-git clone git@github.com:maragudk/gomponents-starter-kit.git your-app-name
-```
-
-After that, you can start the app with:
-
-```shell
+```bash
 make start
 ```
 
-If you make style changes, watch the CSS with:
+Or directly:
 
-```shell
-make watch-css
+```bash
+go run ./cmd/app
 ```
 
-You can run tests and linting with:
+The site will be available at **http://localhost:8080**.
 
-```shell
-make test lint
-```
+No database or external services are required.
 
-### Enabling TailwindCSS auto-complete in your IDE
+### Other commands
 
-[TailwindCSS has auto-complete of classnames (and more) through IDE plugins](https://tailwindcss.com/docs/editor-setup).
-
-After you've installed the TailwindCSS plugin for your IDE, it needs some configuration to work with gomponents. Here's the config for VS Code and JetBrains IDEs:
-
-<details>
-<summary>VSCode</summary>
-
-Edit `vscode-settings.json` and add the following:
-
-```json
-{
-	"tailwindCSS.includeLanguages": {
-		"go": "html",
-	},
-	"tailwindCSS.experimental.classRegex": [
-		["Class(?:es)?[({]([^)}]*)[)}]", "[\"`]([^\"`]*)[\"`]"]
-	],
-}
-```
-
-[See the official plugin page for more info](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
-</details>
-
-<details>
-<summary>JetBrains/GoLand</summary>
-
-Go to `Settings` -> `Languages & Frameworks` -> `Style Sheets` -> `Tailwind CSS` and add the following (don't delete the other config):
-
-```json
-{
-	"includeLanguages": {
-		"go": "html"
-	},
-	"experimental": {
-		"classRegex": [
-			["Class(?:es)?[({]([^)}]*)[)}]", "[\"`]([^\"`]*)[\"`]"]
-		]
-	}
-}
-```
-
-[See the official plugin page for more info](https://plugins.jetbrains.com/plugin/15321-tailwind-css)
-</details>
+| Command             | Description                     |
+|---------------------|---------------------------------|
+| `make start`        | Run the development server      |
+| `make test`         | Run tests                       |
+| `make lint`         | Run golangci-lint               |
+| `make build-docker` | Build a production Docker image |
 
 ## Deploying
 
-The [CD workflow](.github/workflows/cd.yml) automatically builds a multi-platform Docker image and pushes it to the Github container registry GHCR.io, tagged with the commit hash as well as `latest`.
+The [CD workflow](.github/workflows/cd.yml) automatically builds a multi-platform Docker image and pushes it to the GitHub container registry (GHCR), tagged with the commit hash as well as `latest`.
 
-You can try building the image locally with:
+You can build the image locally with:
 
 ```shell
 make build-docker
 ```
 
-Note that [you need the containerd image store enabled](https://docs.docker.com/desktop/containerd/#enable-the-containerd-image-store) for this to work.
+> Note: You need the containerd image store enabled in Docker Desktop for multi-platform builds.

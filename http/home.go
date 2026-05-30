@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"slices"
 	"strings"
 	"time"
 
@@ -46,7 +47,8 @@ var _ errorWithStatusCode = NotFound{}
 // Home handler for the home page, as well as HTMX partial for getting things.
 func Home(r chi.Router) {
 	r.Get("/", ghttp.Adapt(func(w http.ResponseWriter, r *http.Request) (Node, error) {
-		allPosts := posts.AllPosts
+		allPosts := slices.Clone(posts.AllPosts)
+		slices.Reverse(allPosts) // newest first (reverse of definition order)
 
 		if hx.IsRequest(r.Header) {
 			return html.Posts(allPosts, time.Now()), nil

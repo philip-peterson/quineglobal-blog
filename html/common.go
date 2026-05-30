@@ -56,17 +56,26 @@ func page(props PageProps, children ...Node) Node {
 				),
 			),
 			actualFooter(),
+
+			// Dark mode toggle (fixed in corner)
+			Button(
+				ID("theme-toggle"),
+				Class("theme-toggle"),
+				Attr("aria-label", "Toggle dark mode"),
+				Attr("title", "Toggle theme"),
+				Span(Class("icon")),
+			),
 		},
 	})
 }
 
 func header() Node {
-	return Div(
-		Img(Src("/images/quine_global_logo.png"), Height("80")),
-		Div(Style("margin-left: 4px; margin-top: 10px;"),
+	return Header(
+		Img(Src("/images/quine_global_logo.png"), Height("72")),
+		Div(
 			Text("All posts by "),
 			Strong(Text("QUINE Global")),
-			Text(":"),
+			Text("."),
 		),
 	)
 }
@@ -74,31 +83,17 @@ func header() Node {
 func actualFooter() Node {
 	return Div(
 		Class("footer"),
-		A(
-			Href("/"),
-			Text("Home"),
-		),
-		Div(
-			Class("spacer"),
-		),
-		A(
-			Href("/about"),
-			Text("About"),
-		),
-		Div(
-			Class("spacer"),
-		),
-		A(
-			Href("/rss.xml"),
-			Text("RSS Feed"),
-		),
-		Div(
-			Class("spacer"),
-		),
-		A(
-			Href("/credits"),
-			Text("Credits"),
-		),
+		A(Href("/"), Text("Home")),
+		A(Href("/about"), Text("About")),
+		A(Href("/rss.xml"), Text("RSS")),
+		A(Href("/credits"), Text("Credits")),
+	)
+}
+
+func backToHome() Node {
+	return P(
+		Class("back-to-home"),
+		A(Href("/"), Text("← Home")),
 	)
 }
 

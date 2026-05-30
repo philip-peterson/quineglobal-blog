@@ -1,135 +1,644 @@
+/* ==========================================================================
+   QUINE Global Blog — Editorial Refresh (2026)
+   Calm, thoughtful, excellent reading experience
+   ========================================================================== */
+
+:root {
+	/* Light theme */
+	--bg: #f8f5f0;
+	--surface: rgba(255, 255, 255, 0.96);
+	--text: #1c1917;
+	--text-muted: #5f5953;
+	--accent: #5b21b6;
+	--accent-hover: #6b21a8;
+	--purple: #5b21b6;
+	--purple-light: #7c3aed;
+	--gradient-purple: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
+	--border: #e7e2d9;
+	--code-bg: #0f172a;
+	--code-text: #e0f2fe;
+	--link: #4f2a8f;
+	--link-visited: #5b21b6;
+
+	/* Pattern colors */
+	--pattern-color: rgba(0, 0, 0, 0.035);
+}
+
+/* Dark theme */
+.dark {
+	--bg: #121217;
+	--surface: rgba(28, 27, 34, 0.96);
+	--text: #f1f0eb;
+	--text-muted: #a5a19a;
+	--accent: #a78bfa;
+	--accent-hover: #c4b5fd;
+	--purple: #a78bfa;
+	--purple-light: #c4b5fd;
+	--gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #c4b5fd 100%);
+	--border: #3a3842;
+	--code-bg: #1e1e26;
+	--code-text: #c4d0ff;
+	--link: #b8a4ff;
+	--link-visited: #9f8ae8;
+
+	--pattern-color: rgba(255, 255, 255, 0.045);
+}
+
 html, body {
-    padding: 0;
-    margin: 0;
+	margin: 0;
+	padding: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
 
-    font-family: Arial, sans-serif;
-    background: rgb(112,26,189);
-    background: linear-gradient(0deg, rgba(112,26,189,1) 25%, rgba(0,173,255,1) 100%); 
-    background-attachment: fixed;
-    height: 100%;
+	/* Subtle semitransparent dot pattern */
+	background-image: radial-gradient(
+		circle at 1px 1px,
+		var(--pattern-color) 1px,
+		transparent 0
+	);
+	background-size: 22px 22px;
+	background-attachment: fixed;
 }
 
-figure {
+/* ==========================================================================
+   Layout Container
+   ========================================================================== */
+
+.blog {
+	max-width: 780px;
+	margin: 0 auto;
+	padding: 2.5rem 1.25rem 4rem;
+	background: var(--surface);
+	min-height: 100vh;
+	box-shadow: 0 0 0 1px var(--border);
+	position: relative;
+	backdrop-filter: blur(12px);
+}
+
+/* Subtle purple gradient wash at the very top for visual interest */
+.blog::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 160px;
+	background: linear-gradient(
+		to bottom,
+		rgba(91, 33, 182, 0.06) 0%,
+		rgba(124, 58, 237, 0.02) 50%,
+		transparent 100%
+	);
+	pointer-events: none;
+	z-index: 0;
+}
+
+.dark .blog::before {
+	background: linear-gradient(
+		to bottom,
+		rgba(167, 139, 250, 0.07) 0%,
+		rgba(196, 181, 253, 0.025) 50%,
+		transparent 100%
+	);
+}
+
+/* Slightly tighter on small screens */
+@media (max-width: 640px) {
+	.blog {
+		padding: 1.75rem 1rem 3rem;
+		box-shadow: none;
+	}
+}
+
+/* ==========================================================================
+   Header (Home only)
+   ========================================================================== */
+
+header {
+	margin-bottom: 3rem;
+	padding-bottom: 1.75rem;
+	border-bottom: 1px solid var(--border);
+	position: relative;
+}
+
+/* Subtle purple gradient accent under the header */
+header::after {
+	content: '';
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	width: 120px;
+	height: 3px;
+	background: var(--gradient-purple);
+	border-radius: 3px;
+}
+
+header img {
 	display: block;
-	margin-top: 3em;
-	margin-bottom: 3em;
+	height: 72px;
+	width: auto;
+	margin-bottom: 0.75rem;
 }
 
-figure > img {
+header > div {
+	font-size: 0.95rem;
+	color: var(--text-muted);
+	line-height: 1.5;
+}
+
+header strong {
+	background: var(--gradient-purple);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-weight: 700;
+}
+
+/* ==========================================================================
+   Post List (Home)
+   ========================================================================== */
+
+.post-teaser {
+	display: block;
+	color: inherit;
+	text-decoration: none;
+	margin-bottom: 2.25rem;
+	padding: 1.1rem 0.75rem 1.35rem;
+	border-radius: 6px;
+	border-bottom: 1px solid var(--border);
+	transition: background-color 0.12s ease;
+}
+
+.post-teaser:hover {
+	background-color: rgba(0, 0, 0, 0.028);
+}
+
+.dark .post-teaser:hover {
+	background-color: rgba(255, 255, 255, 0.032);
+}
+
+.post-teaser:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px var(--accent);
+	border-radius: 6px;
+}
+
+.post-teaser:last-child {
+	border-bottom: none;
+	padding-bottom: 0.6rem;
+	margin-bottom: 0;
+}
+
+.post-date {
+	display: block;
+	font-size: 0.75rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	background: var(--gradient-purple);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	margin-bottom: 0.4rem;
+	font-weight: 600;
+	opacity: 0.85;
+}
+
+.post-teaser h1,
+.post-teaser h2 {
+	font-size: 1.35rem;
+	line-height: 1.25;
+	margin: 0.1rem 0 0.45rem;
+	font-weight: 700;
+	color: var(--text);
+	transition: color 0.12s ease;
+}
+
+.post-teaser:hover h2 {
+	color: var(--accent);
+}
+
+.teaser {
+	margin: 0.3rem 0 0.6rem;
+	color: var(--text-muted);
+	font-size: 0.98rem;
+	line-height: 1.55;
+}
+
+.read-more {
+	display: inline-block;
+	font-size: 0.9rem;
+	color: var(--accent);
+	font-weight: 500;
+	position: relative;
+	transition: color 0.12s ease;
+	pointer-events: none; /* the whole card is the link */
+}
+
+.post-teaser:hover .read-more {
+	color: var(--accent-hover);
+}
+
+.post-teaser:hover .read-more::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: -1px;
 	width: 100%;
+	height: 1.5px;
+	background: var(--gradient-purple);
+	border-radius: 2px;
 }
 
-figure > figcaption {
+/* ==========================================================================
+   Computing Facts Ticker (Home only)
+   ========================================================================== */
+
+.computing-ticker {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	overflow: hidden;
+	margin-bottom: 2rem;
+	padding: 0.7rem 0.75rem;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.82rem;
+	color: var(--text-muted);
+	position: relative;
+	min-height: 3.1rem; /* taller box to comfortably hold two lines */
+}
+
+/* Each row is an independent horizontal scroller */
+.computing-ticker-row {
+	overflow: hidden;
+	white-space: nowrap;
+	position: relative;
+
+	/* Soft edge fades */
+	mask-image: linear-gradient(
+		to right,
+		transparent 0%,
+		black 6%,
+		black 94%,
+		transparent 100%
+	);
+	-webkit-mask-image: linear-gradient(
+		to right,
+		transparent 0%,
+		black 6%,
+		black 94%,
+		transparent 100%
+	);
+}
+
+.computing-ticker-row .computing-ticker-inner {
+	display: inline-flex;
+	align-items: center;
+	gap: 0; /* we control spacing via the joined text */
+	animation: ticker-scroll 34s linear infinite;
+}
+
+/* Second row scrolls at a different speed for a nice layered effect */
+.computing-ticker-row:nth-child(2) .computing-ticker-inner {
+	animation-duration: 47s;
+	animation-delay: -12s; /* offset so they don't look synchronized */
+}
+
+/* Never pause on hover */
+.computing-ticker:hover .computing-ticker-inner {
+	animation-play-state: running;
+}
+
+@keyframes ticker-scroll {
+	from { transform: translateX(0); }
+	to   { transform: translateX(-50%); }
+}
+
+/* ==========================================================================
+   Article / Markdown Content
+   ========================================================================== */
+
+.markdown {
+	max-width: 68ch;
+	margin: 0 auto;
+	font-size: 1.05rem;
+	line-height: 1.78;
+}
+
+.markdown h1 {
+	font-size: 2.05rem;
+	line-height: 1.15;
+	margin: 0 0 1.35rem;
 	text-align: center;
-	color: #555;
+	font-weight: 700;
+	letter-spacing: -0.015em;
+}
+
+.markdown h2 {
+	font-size: 1.45rem;
+	margin: 2.1em 0 0.6em;
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.markdown h3 {
+	font-size: 1.2rem;
+	margin: 1.85em 0 0.5em;
+	font-weight: 600;
+}
+
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+	font-size: 1.05rem;
+	margin: 1.6em 0 0.4em;
+	font-weight: 600;
+}
+
+.markdown p {
+	margin: 0 0 1.15em;
+}
+
+.markdown a,
+.markdown a:link,
+.markdown a:visited {
+	color: var(--link);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	text-decoration-thickness: 1px;
+}
+
+.markdown a:hover {
+	color: var(--accent-hover);
+	text-decoration-thickness: 1.5px;
+}
+
+.markdown strong {
+	font-weight: 600;
+}
+
+.markdown em {
 	font-style: italic;
 }
+
+/* Images */
+.markdown img {
+	display: block;
+	margin: 1.75rem auto;
+	max-width: 100%;
+	border-radius: 3px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.markdown figure {
+	margin: 2rem 0;
+}
+
+.markdown figcaption {
+	margin-top: 0.6rem;
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	text-align: center;
+	font-style: italic;
+	line-height: 1.4;
+}
+
+/* Blockquotes — clean, editorial with purple gradient accent */
+.markdown blockquote {
+	margin: 1.9rem 0;
+	padding: 1rem 1.35rem 1rem 1.5rem;
+	border-left: 4px solid;
+	border-image: linear-gradient(to bottom, var(--purple), var(--purple-light)) 1;
+	background: rgba(0, 0, 0, 0.025);
+	color: var(--text);
+	font-size: 1.02rem;
+	line-height: 1.7;
+}
+
+.dark .markdown blockquote {
+	background: rgba(255, 255, 255, 0.04);
+}
+
+.markdown blockquote p:last-child {
+	margin-bottom: 0;
+}
+
+/* Code — inline vs block */
+.markdown code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	background: rgba(0, 0, 0, 0.06);
+	color: #3f2e1e;
+	padding: 0.12em 0.4em;
+	border-radius: 4px;
+	font-size: 0.9em;
+}
+
+.dark .markdown code {
+	background: rgba(255, 255, 255, 0.08);
+	color: #d1c4ff;
+}
+
+.markdown pre {
+	margin: 1.65rem 0;
+	padding: 1rem 1.15rem;
+	background: var(--code-bg);
+	color: var(--code-text);
+	border-radius: 6px;
+	overflow-x: auto;
+	font-size: 0.92rem;
+	line-height: 1.55;
+}
+
+.markdown pre code {
+	background: transparent;
+	color: inherit;
+	padding: 0;
+	border-radius: 0;
+	display: inline;
+	font-size: inherit;
+}
+
+/* Lists */
+.markdown ul,
+.markdown ol {
+	margin: 1.1rem 0 1.3rem;
+	padding-left: 1.35rem;
+}
+
+.markdown li {
+	margin-bottom: 0.35rem;
+}
+
+/* Horizontal rule */
+.markdown hr {
+	border: none;
+	border-top: 1px solid var(--border);
+	margin: 2.4rem 0;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
 
 .footer {
 	display: flex;
 	justify-content: center;
-	margin-top: 1em;
-	color: white;
-	margin-bottom: 17em;
-	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.35rem 0.9rem;
+	margin-top: 3.5rem;
+	padding-top: 1.75rem;
+	border-top: 1px solid var(--border);
+	font-size: 0.9rem;
+	color: var(--text-muted);
 }
 
-.footer > a {
-	display: block;
-	padding: 1em;
+.footer a,
+.footer a:link,
+.footer a:visited {
+	color: var(--text-muted);
+	text-decoration: none;
+	padding: 0.25rem 0.1rem;
+	transition: color 0.1s ease;
 }
 
-.footer > a:link, .footer > a:visited {
-	color: #eee;
+.footer a:hover {
+	color: var(--accent);
 }
 
-.footer > a:hover {
-	color: #fffd92;
+.footer .spacer {
+	display: none;
 }
 
-.footer > .spacer {
-	margin-left: 1em;
-	margin-right: 1em;
+/* Back link on secondary pages (About, Credits) */
+.back-to-home {
+	margin: 0 0 2rem;
+	font-size: 0.9rem;
 }
+
+.back-to-home a,
+.back-to-home a:link,
+.back-to-home a:visited {
+	color: var(--text-muted);
+	text-decoration: none;
+}
+
+.back-to-home a:hover {
+	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+/* ==========================================================================
+   General Links (outside article)
+   ========================================================================== */
 
 a, a:link, a:visited {
-	color: #3b7fff;
+	color: var(--link);
 }
 
-.blog {
-    max-width: 900px;
-    background: rgb(247, 247, 247);
-    margin: 0 auto;
-    padding: 50px;
-    margin-top: 2em;
+a:hover {
+	color: var(--accent-hover);
 }
 
-.markdown {
-    max-width: 800px;
-    margin: 0 auto;
+/* ==========================================================================
+   Responsive Tweaks
+   ========================================================================== */
+
+@media (max-width: 480px) {
+	.markdown {
+		font-size: 1rem;
+		line-height: 1.72;
+	}
+	
+	.markdown h1 {
+		font-size: 1.75rem;
+	}
+	
+	.post-teaser h1,
+	.post-teaser h2 {
+		font-size: 1.22rem;
+	}
 }
 
-.markdown h1 {
-    text-align: center;
+/* ==========================================================================
+   Theme Toggle (Dark Mode)
+   ========================================================================== */
+
+.theme-toggle {
+	position: fixed;
+	top: 18px;
+	right: 18px;
+	z-index: 100;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	padding: 0;
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	background: var(--surface);
+	color: var(--text-muted);
+	font-size: 18px;
+	line-height: 1;
+	cursor: pointer;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+	transition: all 0.2s ease;
 }
 
-.markdown h2,
-.markdown h3,
-.markdown h4,
-.markdown h5,
-.markdown h6 {
-    text-align: left;
+.theme-toggle:hover {
+	color: var(--accent);
+	border-color: var(--accent);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-.markdown blockquote {
-    background: #fafafa;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    padding: 5px 10px 5px 35px;
-    position: relative;
-    overflow: hidden;
+.theme-toggle:active {
+	transform: scale(0.94);
 }
 
-.markdown blockquote:before,
-.markdown blockquote:after {
-    content: 'â€œ';
-    position: absolute;
-    left: 5px;
-    top: 10px;
-    line-height: 50px;
-    font-size: 80px;
-    color: rgba(0, 0, 0, 0.3);
-    font-family: Arial, sans-serif;
+.dark .theme-toggle {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.markdown blockquote:after {
-    content: 'â€';
-    left: initial;
-    top: initial;
-    line-height: 0px;
-    bottom: 0px;
-    right: 0px;
+/* Icon inside toggle */
+.theme-toggle .icon {
+	display: block;
+	transition: transform 0.3s ease;
 }
 
-.markdown img {
-    display: block;
-    margin: 10px auto;
-    max-width: 100%;
+.theme-toggle:hover .icon {
+	transform: rotate(20deg);
 }
 
-.markdown img + code {
-    text-align: center;
-    width: 100%;
-    display: block;
-    margin-bottom: 10px;
+/* Hide default browser focus ring, add nicer one */
+.theme-toggle:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(91, 33, 182, 0.25);
 }
 
-.markdown code {
-    background: #313c51;
-    color: white;
-    padding: 14px 10px;
-    border-radius: 3px;
-    display: inline-block;
-    width: 100%;
-    overflow: auto;
+.dark .theme-toggle:focus-visible {
+	box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.3);
+}
+
+/* Elegant four-circle divider (used after footnotes etc.) */
+.post-divider {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.9rem;
+	margin: 2.25em 0;
+}
+
+.post-divider .circle {
+	width: 0.55em;
+	height: 0.55em;
+	border: 1.5px solid var(--accent);
+	border-radius: 50%;
+	opacity: 0.65;
 }

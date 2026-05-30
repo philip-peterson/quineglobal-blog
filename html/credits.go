@@ -10,11 +10,10 @@ func CreditsPage(props PageProps) Node {
 	props.Header = false
 
 	return page(props,
-		Div(Class("prose prose-indigo prose-lg md:prose-xl"),
-			P(
-				Text("Roboto font is provided by Google and authored by Christian Robertson. "),
-				A(Href("https://blog.quineglobal.com/static/fonts/LICENSE.txt"), Text("License here.")),
-			),
+		backToHome(),
+
+		P(
+			Text("This site uses system fonts for speed and reliability."),
 		),
 	)
 }
