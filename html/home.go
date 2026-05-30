@@ -234,6 +234,7 @@ func ComputingTicker() Node {
 	}
 
 	sep := " • "
+	nbsp := "\u00A0" // non-breaking space, prevents whitespace collapsing at marquee seam
 
 	// Split facts roughly in half for two scrolling lines
 	mid := (len(facts) + 1) / 2
@@ -251,11 +252,12 @@ func ComputingTicker() Node {
 		return s
 	}
 
-	// Duplicate each row's content for seamless scrolling
-	// Add an extra trailing space after the final separator so the loop seam
-	// always shows "space bullet space" instead of "space bullet".
-	row1 := joinFacts(row1Facts) + sep + " "
-	row2 := joinFacts(row2Facts) + sep + " "
+	// Duplicate each row's content for seamless scrolling.
+	// We append sep + nbsp so the seam between the two identical copies
+	// always shows a full " • " (space-bullet-space) instead of a collapsed
+	// "space bullet" at the loop point.
+	row1 := joinFacts(row1Facts) + sep + nbsp
+	row2 := joinFacts(row2Facts) + sep + nbsp
 
 	return Div(
 		Class("computing-ticker"),

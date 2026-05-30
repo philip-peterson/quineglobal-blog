@@ -364,6 +364,11 @@ header strong {
 	animation: ticker-scroll 34s linear infinite;
 }
 
+/* Preserve trailing spaces/nbsp at the seam of the duplicated marquee content */
+.computing-ticker-inner span {
+	white-space: pre;
+}
+
 /* Second row scrolls at a different speed for a nice layered effect */
 .computing-ticker-row:nth-child(2) .computing-ticker-inner {
 	animation-duration: 47s;
