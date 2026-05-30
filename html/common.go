@@ -71,6 +71,12 @@ func page(props PageProps, children ...Node) Node {
 
 func header() Node {
 	return Header(
+		Div(
+			Class("site-hierarchy"),
+			A(Href("https://quineglobal.com"), Class("hierarchy-parent"), Text("QUINE Global")),
+			Div(Class("hierarchy-connector")),
+			Span(Class("hierarchy-current"), Text("Blog")),
+		),
 		Img(Src("/images/quine_global_logo.png"), Height("72")),
 		Div(
 			Text("All posts by "),

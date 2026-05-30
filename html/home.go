@@ -149,6 +149,10 @@ func PostReader(post model.QuinePost, otherPosts []model.QuinePost, now time.Tim
 	return Div(
 		Div(
 			Class("markdown"),
+			P(
+				Class("back-to-home"),
+				A(Href("/"), Text("« Back to all posts")),
+			),
 			H1(
 				Text(post.Title),
 			),
@@ -309,21 +313,18 @@ func PostReader(post model.QuinePost, otherPosts []model.QuinePost, now time.Tim
 	)
 }
 
-// ComputingTicker renders a scrolling marquee of delightfully nonsensical
-// computing / Lisp-flavored facts on the home page.
+// ComputingTicker renders a scrolling marquee of philosophical and computational claims.
 func ComputingTicker() Node {
 	facts := []string{
 		`(cons '(4) '(3)) == '(4 3)`,
 		`((lambda (x) x) 'quine) == 'quine`,
 		`(car (cdr '(a b c))) => b`,
 		`(append '() '(x y)) == '(x y)`,
-		`(map (lambda (x) (* x x)) '(1 2 3)) == '(1 4 9)`,
-		`'(this is not evaluated)`,
-		`(eq? (list) '()) => #f`,
-		`(+ 40 2) == 42`,
-		"`(1 ,@'(2 3) 4) => (1 2 3 4)`",
 		`quines output their own source code`,
-		`(eval (read "(+ 1 1)")) => 2`,
+		`((lambda (x) (x x)) (lambda (x) (x x))) never terminates`,
+		`Nihilism is more provable but constructivism is the answer`,
+		`Sometimes a local minimum can be escaped with minimal activation energy`,
+		`Free will may be illusory, but the experience of choice is not`,
 		`(omega (lambda (x) (x x))) never returns`,
 	}
 
@@ -346,8 +347,10 @@ func ComputingTicker() Node {
 	}
 
 	// Duplicate each row's content for seamless scrolling
-	row1 := joinFacts(row1Facts) + sep
-	row2 := joinFacts(row2Facts) + sep
+	// Add an extra trailing space after the final separator so the loop seam
+	// always shows "space bullet space" instead of "space bullet".
+	row1 := joinFacts(row1Facts) + sep + " "
+	row2 := joinFacts(row2Facts) + sep + " "
 
 	return Div(
 		Class("computing-ticker"),
