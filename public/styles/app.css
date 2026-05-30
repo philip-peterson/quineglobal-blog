@@ -5,7 +5,6 @@
 
 :root {
 	/* Light theme */
-	--bg: #f8f5f0;
 	--surface: rgba(255, 255, 255, 0.96);
 	--text: #1c1917;
 	--text-muted: #5f5953;
@@ -14,14 +13,13 @@
 	--purple: #5b21b6;
 	--purple-light: #7c3aed;
 	--gradient-purple: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
-	--border: #e7e2d9;
+	--border: #d6e3f0;
 	--code-bg: #0f172a;
 	--code-text: #e0f2fe;
 	--link: #4f2a8f;
 	--link-visited: #5b21b6;
 
-	/* Pattern colors */
-	--pattern-color: rgba(0, 0, 0, 0.035);
+	--title-hover: #7c3aed; /* slightly more violet for post title hovers (light mode) */
 }
 
 /* Dark theme */
@@ -41,27 +39,30 @@
 	--link: #b8a4ff;
 	--link-visited: #9f8ae8;
 
-	--pattern-color: rgba(255, 255, 255, 0.045);
+	--title-hover: #c4b5fd; /* slightly more violet for post title hovers (dark mode) */
 }
 
 html, body {
 	margin: 0;
 	padding: 0;
-	background: var(--bg);
 	color: var(--text);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 	line-height: 1.6;
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
 
-	/* Subtle semitransparent dot pattern */
-	background-image: radial-gradient(
-		circle at 1px 1px,
-		var(--pattern-color) 1px,
-		transparent 0
+	/* Blue ocean-like gradient background (light mode) */
+	background: linear-gradient(
+		180deg,
+		#5fa8d3 0%,
+		#2a6fa8 38%,
+		#0d2744 100%
 	);
-	background-size: 22px 22px;
-	background-attachment: fixed;
+}
+
+/* Dark mode keeps solid background */
+.dark html, .dark body {
+	background: var(--bg);
 }
 
 /* ==========================================================================
@@ -79,7 +80,7 @@ html, body {
 	backdrop-filter: blur(12px);
 }
 
-/* Subtle purple gradient wash at the very top for visual interest */
+/* Subtle gradient wash at the very top for visual interest */
 .blog::before {
 	content: '';
 	position: absolute;
@@ -89,8 +90,8 @@ html, body {
 	height: 160px;
 	background: linear-gradient(
 		to bottom,
-		rgba(91, 33, 182, 0.06) 0%,
-		rgba(124, 58, 237, 0.02) 50%,
+		rgba(10, 66, 140, 0.05) 0%,
+		rgba(10, 66, 140, 0.015) 50%,
 		transparent 100%
 	);
 	pointer-events: none;
@@ -170,6 +171,12 @@ header strong {
 	border-radius: 6px;
 	border-bottom: 1px solid var(--border);
 	transition: background-color 0.12s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.post-teaser-content {
+	max-width: 23.125rem; /* ~370px equivalent */
 }
 
 .post-teaser:hover {
@@ -179,6 +186,49 @@ header strong {
 .dark .post-teaser:hover {
 	background-color: rgba(255, 255, 255, 0.032);
 }
+
+.dark .post-date {
+	background: rgba(20, 40, 70, 0.6);
+	border-color: rgba(80, 110, 150, 0.4);
+	color: #a3b8d0;
+}
+
+/* Sequential diagonal slashes on the right half of the card on hover */
+.post-slash-container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 52%;
+	height: 100%;
+	pointer-events: none;
+	z-index: 2;
+	overflow: hidden;
+}
+
+.post-slash-container .slash {
+	position: absolute;
+	top: 12%;
+	width: 2.5px;
+	height: 76%;
+	background: rgba(91, 33, 182, 0.22);
+	opacity: 0;
+	transform: rotate(48deg);
+	transition: opacity 260ms ease;
+}
+
+.dark .post-slash-container .slash {
+	background: rgba(167, 139, 250, 0.26);
+}
+
+.post-teaser:hover .slash {
+	opacity: 0.85;
+}
+
+.post-slash-container .slash:nth-child(1) { left: 6%;  transition-delay: 40ms; }
+.post-slash-container .slash:nth-child(2) { left: 18%; transition-delay: 140ms; }
+.post-slash-container .slash:nth-child(3) { left: 30%; transition-delay: 240ms; }
+.post-slash-container .slash:nth-child(4) { left: 42%; transition-delay: 340ms; }
+.post-slash-container .slash:nth-child(5) { left: 54%; transition-delay: 440ms; }
 
 .post-teaser:focus-visible {
 	outline: none;
@@ -194,15 +244,17 @@ header strong {
 
 .post-date {
 	display: block;
-	font-size: 0.75rem;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	background: var(--gradient-purple);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	margin-bottom: 0.4rem;
-	font-weight: 600;
-	opacity: 0.85;
+	width: fit-content;
+	font-size: 0.7rem;
+	font-style: italic;
+	letter-spacing: 0.02em;
+	padding: 0.2rem 0.6rem;
+	border-radius: 9999px;
+	background: rgba(15, 39, 68, 0.08);
+	color: #2c4a6e;
+	border: 1px solid rgba(15, 39, 68, 0.18);
+	margin-bottom: 0.5rem;
+	font-weight: 500;
 }
 
 .post-teaser h1,
@@ -216,7 +268,7 @@ header strong {
 }
 
 .post-teaser:hover h2 {
-	color: var(--accent);
+	color: var(--title-hover);
 }
 
 .teaser {
@@ -332,10 +384,24 @@ header strong {
 .markdown h1 {
 	font-size: 2.05rem;
 	line-height: 1.15;
-	margin: 0 0 1.35rem;
-	text-align: center;
-	font-weight: 700;
-	letter-spacing: -0.015em;
+	margin: 0 0 1.5rem;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	opacity: 0.85;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	justify-content: center;
+	color: var(--text);
+}
+
+.markdown h1::before,
+.markdown h1::after {
+	content: '';
+	flex: 1;
+	max-width: 90px;
+	border-top: 1px dashed var(--accent);
+	opacity: 0.35;
 }
 
 .markdown h2 {
@@ -641,4 +707,175 @@ a:hover {
 	border: 1.5px solid var(--accent);
 	border-radius: 50%;
 	opacity: 0.65;
+}
+
+/* Other posts section on individual post pages */
+.other-posts {
+	margin-top: 3rem;
+	padding: 1.75rem 3rem 0;
+	border-top: 1px solid var(--border);
+}
+
+.other-posts h3 {
+	font-size: 0.95rem;
+	margin: 0 0 0.6rem;
+	font-weight: 600;
+	color: var(--text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.other-posts ul {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 0.9rem;
+}
+
+.other-posts li {
+	margin-bottom: 0.35rem;
+}
+
+.other-posts li a {
+	color: var(--text);
+	text-decoration: none;
+	font-size: 0.95rem;
+}
+
+.other-posts li a:hover {
+	color: var(--accent);
+	text-decoration: underline;
+}
+
+/* Scattered post cards in the Other posts section */
+.scattered-posts {
+	position: relative;
+	min-height: 220px;
+	max-width: 45rem; /* ~720px container so rightmost cards can reach ~570px left */
+	margin: 0.75rem 0 1rem;
+	background: rgba(0, 0, 0, 0.018);
+	border-radius: 8px;
+}
+
+.dark .scattered-posts {
+	background: rgba(255, 255, 255, 0.025);
+}
+
+.scattered-post {
+	position: absolute;
+	display: block;
+	background: #ffffff;
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	padding: 0.55rem 0.8rem;
+	max-width: 185px;
+	font-size: 0.92rem;
+	line-height: 1.25;
+	color: var(--text);
+	text-decoration: none;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	z-index: 1;
+}
+
+.dark .scattered-post {
+	background: #2a2f38;
+	border-color: #3f4654;
+	color: #e2e8f0;
+}
+
+.scattered-post:hover {
+	transform: scale(1.03) rotate(0deg) !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+	z-index: 10;
+	color: var(--accent);
+}
+
+.dark .scattered-post:hover {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Positions are now generated randomly at runtime via inline styles for true variety */
+
+/* Actions row below other posts list */
+.other-posts-actions {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--border);
+}
+
+.other-posts-actions a {
+	background-color: #f8f9fb;
+	border: 1px solid #e2e8f0;
+	padding: 0.55rem 1rem;
+	border-radius: 9999px;
+	font-size: 0.9rem;
+	color: #1c1917;
+	text-decoration: none;
+	font-weight: 500;
+	transition: all 0.15s ease;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.other-posts-actions a:hover {
+	background-color: #ffffff;
+	border-color: var(--accent);
+	color: var(--accent);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.dark .other-posts-actions a {
+	background-color: #2a2f38;
+	border-color: #3f4654;
+	color: #e2e8f0;
+}
+
+.dark .other-posts-actions a:hover {
+	background-color: #343b47;
+	border-color: #a78bfa;
+	color: #c4b5fd;
+}
+
+/* Styling for the final "For more insights about..." / footer note on posts */
+.post-footer-note {
+	background: rgba(255, 255, 255, 0.65);
+	border-left: 4px solid var(--accent);
+	padding: 1.1rem 1.4rem;
+	margin: 2.5rem 0 1.5rem !important;
+	border-radius: 0 6px 6px 0;
+	font-size: 0.97rem;
+	line-height: 1.55;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.dark .post-footer-note {
+	background: rgba(42, 47, 56, 0.75);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Re-shuffle button for Other posts section */
+.other-posts-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+.reshuffle-btn {
+	font-size: 0.75rem;
+	padding: 0.25rem 0.6rem;
+	border: 1px solid var(--border);
+	background: var(--surface);
+	color: var(--text-muted);
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.15s ease;
+}
+
+.reshuffle-btn:hover {
+	border-color: var(--accent);
+	color: var(--accent);
 }

@@ -9,13 +9,13 @@ import (
 	"app/model"
 )
 
-func PostPage(props PageProps, post model.QuinePost, now time.Time) Node {
+func PostPage(props PageProps, post model.QuinePost, otherPosts []model.QuinePost, now time.Time) Node {
 	props.Title = post.Title + " | QUINE"
 
 	return page(props,
 		Div(
 			Div(
-				PostReader(post, now),
+				PostReader(post, otherPosts, now),
 			),
 		),
 	)

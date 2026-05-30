@@ -16,8 +16,6 @@ var netua = model.QuinePost{
 	Updated:     time.Date(2019, 12, 5, 0, 0, 0, 0, time.UTC),
 	FooterSegue: "For more from Quine",
 	Content: []Node{
-		P(Text("Written 2019-12-05")),
-
 		P(Text("We the people of Netua, do not necessarily agree on the things, and an attack on one of us is not necessarily an attack on all of us. We believe in the nonspecific and the nonexhaustive. Contradict one of us, and you have contradicted, well... only one of us, because we do not fight for each other or ourselves. We do not fight for any nations. We respect the high bidder and believe that wars are won mostly out of chance.")),
 
 		P(Text("We stand together on our lack of unification. Our lack of group identity is our distinct identity. We are not Anonymous, since we have a name, but the name must mean nothing to all people or the name must change.")),

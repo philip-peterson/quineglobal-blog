@@ -76,7 +76,13 @@ func Home(r chi.Router) {
 				ctx := r.Context()
 				post := ctx.Value(postCtxKey{}).(model.QuinePost)
 
-				return html.PostPage(html.PageProps{}, post, time.Now()), nil
+				// Prepare other posts (exclude current, show most recent first)
+				otherPosts := lo.Filter(posts.AllPosts, func(p model.QuinePost, _ int) bool {
+					return p.Id != post.Id
+				})
+				slices.Reverse(otherPosts)
+
+				return html.PostPage(html.PageProps{}, post, otherPosts, time.Now()), nil
 			}))
 	})
 
