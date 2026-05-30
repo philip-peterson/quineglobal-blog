@@ -957,4 +957,62 @@ a:hover {
 	color: var(--accent);
 }
 
+/* ============================================
+   Page Slide Transitions (View Transitions API)
+   ============================================ */
+
+/* Forward navigation (default) */
+::view-transition-old(root) {
+  animation: slide-out-left 0.4s ease forwards;
+}
+
+::view-transition-new(root) {
+  animation: slide-in-right 0.4s ease forwards;
+}
+
+/* Back navigation */
+html.back-transition ::view-transition-old(root) {
+  animation: slide-out-right 0.4s ease forwards;
+}
+
+html.back-transition ::view-transition-new(root) {
+  animation: slide-in-left 0.4s ease forwards;
+}
+
+@keyframes slide-out-left {
+  to {
+    transform: translateX(-25%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(25%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-right {
+  to {
+    transform: translateX(25%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-25%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 
