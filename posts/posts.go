@@ -9,5 +9,5 @@ var AllPosts []model.QuinePost = []model.QuinePost{
 	whatIsQuine,
 	voting1789,
 	netua,
-	spaceBetweenKeystrokes,
+	quineHyper,
 }

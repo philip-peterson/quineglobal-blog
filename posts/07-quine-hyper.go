@@ -8,9 +8,9 @@ import (
 	. "maragu.dev/gomponents/html"
 )
 
-var spaceBetweenKeystrokes = model.QuinePost{
-	Title:       "The Space Between Keystrokes",
-	Id:          "space-between-keystrokes",
+var quineHyper = model.QuinePost{
+	Title:       "Announcing Quine Hyper",
+	Id:          "quine-hyper",
 	Teaser:      "Introducing Quine Hyper",
 	Created:     time.Date(2026, 5, 29, 0, 0, 0, 0, time.UTC),
 	Updated:     time.Date(2026, 5, 29, 0, 0, 0, 0, time.UTC),
