@@ -1,6 +1,7 @@
 package html
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -132,26 +133,24 @@ func PostReader(post model.QuinePost, otherPosts []model.QuinePost, now time.Tim
 		otherPostsToShow = otherPostsToShow[:4]
 	}
 
-	// Prepare full list of other posts for client-side re-shuffling
+	// Prepare full list for client-side re-shuffling (simple & light)
 	type otherPostJSON struct {
 		ID    string `json:"id"`
 		Title string `json:"title"`
 	}
 	var allOtherPostsJSON []otherPostJSON
 	for _, p := range otherPosts {
-		allOtherPostsJSON = append(allOtherPostsJSON, otherPostJSON{
-			ID:    p.Id,
-			Title: p.Title,
-		})
+		allOtherPostsJSON = append(allOtherPostsJSON, otherPostJSON{ID: p.Id, Title: p.Title})
 	}
 	otherPostsJSON, _ := json.Marshal(allOtherPostsJSON)
+	otherPostsDataAttr := base64.StdEncoding.EncodeToString(otherPostsJSON)
 
 	return Div(
 		Div(
 			Class("markdown"),
 			P(
 				Class("back-to-home"),
-				A(Href("/"), Text("« Back to all posts")),
+				A(Href("/"), Class("back-to-posts"), Text("« Back to all posts")),
 			),
 			H1(
 				Text(post.Title),
@@ -178,6 +177,7 @@ func PostReader(post model.QuinePost, otherPosts []model.QuinePost, now time.Tim
 		// Other posts section
 		Div(
 			Class("other-posts"),
+			Attr("data-other-posts", otherPostsDataAttr),
 			Div(
 				Class("other-posts-header"),
 				H3(Text("Other posts")),
@@ -187,7 +187,6 @@ func PostReader(post model.QuinePost, otherPosts []model.QuinePost, now time.Tim
 					Text("Re-shuffle"),
 				),
 			),
-			Script(Type("application/json"), ID("other-posts-data"), Text(string(otherPostsJSON))),
 			Div(
 				Class("scattered-posts"),
 				func() Node {
@@ -212,104 +211,10 @@ func PostReader(post model.QuinePost, otherPosts []model.QuinePost, now time.Tim
 			Div(
 				Class("other-posts-actions"),
 				A(Href("/"), Class("view-all-posts"), Text("← View all posts")),
-				A(Href("https://quineglobal.com"), Class("global-projects"), Text("Check out all our cool Global Projects >")),
+				Span(Class("other-posts-actions-spacer")),
+				A(Href("https://quineglobal.com"), Class("global-projects"), Text("Check out all our cool Global Projects →")),
 			),
 		),
-
-		// Client-side re-shuffle script for Other posts
-		Script(Raw(`
-			(function() {
-				const container = document.querySelector('.scattered-posts');
-				const dataEl = document.getElementById('other-posts-data');
-				const btn = document.getElementById('reshuffle-posts');
-
-				if (!container || !dataEl || !btn) return;
-
-				let allPosts = [];
-				try {
-					allPosts = JSON.parse(dataEl.textContent);
-				} catch (e) {
-					console.error('Failed to parse other posts data');
-					return;
-				}
-
-				function generateLayout(n) {
-					const layout = [];
-					for (let i = 0; i < n; i++) {
-						layout.push({
-							top: Math.floor(Math.random() * 68) + 6,
-							left: Math.floor(Math.random() * 78) + 4,
-							rot: Math.floor(Math.random() * 15) - 7
-						});
-					}
-					return layout;
-				}
-
-				function scoreLayout(layout) {
-					if (layout.length <= 1) return 999;
-					let minDist = 1000;
-					for (let i = 0; i < layout.length; i++) {
-						for (let j = i + 1; j < layout.length; j++) {
-							const dx = layout[i].left - layout[j].left;
-							const dy = layout[i].top - layout[j].top;
-							const dist = Math.sqrt(dx * dx + dy * dy);
-							if (dist < minDist) minDist = dist;
-						}
-					}
-					return minDist;
-				}
-
-				function bestScatteredLayout(n, attempts = 60) {
-					if (n <= 0) return [];
-					let best = generateLayout(n);
-					let bestScore = scoreLayout(best);
-					for (let i = 0; i < attempts; i++) {
-						const candidate = generateLayout(n);
-						const s = scoreLayout(candidate);
-						if (s > bestScore) {
-							bestScore = s;
-							best = candidate;
-						}
-					}
-					return best;
-				}
-
-				function shuffleArray(array) {
-					const arr = array.slice();
-					for (let i = arr.length - 1; i > 0; i--) {
-						const j = Math.floor(Math.random() * (i + 1));
-						[arr[i], arr[j]] = [arr[j], arr[i]];
-					}
-					return arr;
-				}
-
-				function renderScatteredPosts(posts) {
-					if (!posts || posts.length === 0) return;
-					const layout = bestScatteredLayout(posts.length);
-					container.innerHTML = '';
-
-					posts.forEach((post, i) => {
-						const pos = layout[i] || { top: 20, left: 10, rot: 0 };
-						const a = document.createElement('a');
-						a.className = 'scattered-post';
-						a.href = '/post/' + post.id;
-						a.style.top = pos.top + '%';
-						a.style.left = pos.left + '%';
-						a.style.transform = 'rotate(' + pos.rot + 'deg)';
-						a.textContent = post.title;
-						container.appendChild(a);
-					});
-				}
-
-				btn.addEventListener('click', () => {
-					if (allPosts.length === 0) return;
-					// Pick up to 4 random posts
-					const shuffled = shuffleArray(allPosts);
-					const selected = shuffled.slice(0, Math.min(4, shuffled.length));
-					renderScatteredPosts(selected);
-				});
-			})();
-		`)),
 	)
 }
 

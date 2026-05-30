@@ -10,10 +10,13 @@ func CreditsPage(props PageProps) Node {
 	props.Header = false
 
 	return page(props,
-		backToHome(),
+		Div(
+			Class("markdown"),
+			backToHome(),
 
-		P(
-			Text("This site uses system fonts for speed and reliability."),
+			P(
+				Text("This site uses system fonts for speed and reliability."),
+			),
 		),
 	)
 }

@@ -45,6 +45,7 @@ func page(props PageProps, children ...Node) Node {
 		Head: []Node{
 			Link(Rel("stylesheet"), Href(appCSSPath)),
 			Script(Src(htmxJSPath), Defer()),
+			Script(Src("https://code.jquery.com/jquery-3.7.1.slim.min.js"), Defer()),
 			Script(Src(appJSPath), Defer()),
 			Meta(Name("viewport"), Content("width=device-width, initial-scale=1")),
 		},

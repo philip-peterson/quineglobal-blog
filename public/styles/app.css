@@ -513,11 +513,13 @@ header strong {
 	padding: 0.12em 0.4em;
 	border-radius: 4px;
 	font-size: 0.9em;
+	overflow-wrap: anywhere;
 }
 
 .dark .markdown code {
 	background: rgba(255, 255, 255, 0.08);
 	color: #d1c4ff;
+	overflow-wrap: anywhere;
 }
 
 .markdown pre {
@@ -538,6 +540,8 @@ header strong {
 	border-radius: 0;
 	display: inline;
 	font-size: inherit;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
 }
 
 /* Lists */
@@ -673,6 +677,47 @@ header strong {
 	color: var(--accent);
 	text-decoration: underline;
 	text-underline-offset: 2px;
+}
+
+/* Pill button style for the « Back to all posts link at the top of blog posts.
+   (Distinct from the simple text link used on About/Credits pages.) */
+.back-to-home .back-to-posts,
+a.back-to-posts {
+	background-color: #f8f9fb;
+	border: 1px solid #e2e8f0;
+	padding: 0.55rem 1rem;
+	border-radius: 9999px;
+	font-size: 0.9rem;
+	color: #1c1917;
+	text-decoration: none;
+	font-weight: 500;
+	transition: all 0.15s ease;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+	display: inline-block;
+	margin-bottom: 1.25rem; /* breathing room before the post title */
+}
+
+.back-to-home .back-to-posts:hover,
+a.back-to-posts:hover {
+	background-color: #ffffff;
+	border-color: var(--accent);
+	color: var(--accent);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+	text-decoration: none;
+}
+
+.dark .back-to-home .back-to-posts,
+.dark a.back-to-posts {
+	background-color: #2a2f38;
+	border-color: #3f4654;
+	color: #e2e8f0;
+}
+
+.dark .back-to-home .back-to-posts:hover,
+.dark a.back-to-posts:hover {
+	background-color: #343b47;
+	border-color: #a78bfa;
+	color: #c4b5fd;
 }
 
 /* ==========================================================================
@@ -883,6 +928,36 @@ a:hover {
 	border-top: 1px solid var(--border);
 }
 
+/* Greedy spacer that pushes "Check out all our cool Global Projects >" all the way to the right */
+.other-posts-actions-spacer {
+	flex: 1 1 auto;
+}
+
+/* Header row inside Other posts: label on left, Re-shuffle button right-aligned */
+.other-posts-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 0.4rem;
+}
+
+/* Re-shuffle button */
+.reshuffle-btn {
+	font-size: 0.75rem;
+	padding: 0.25rem 0.6rem;
+	border: 1px solid var(--border);
+	background: var(--surface);
+	color: var(--text-muted);
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.15s ease;
+}
+
+.reshuffle-btn:hover {
+	border-color: var(--accent);
+	color: var(--accent);
+}
+
 .other-posts-actions a {
 	background-color: #f8f9fb;
 	border: 1px solid #e2e8f0;
@@ -932,87 +1007,5 @@ a:hover {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Re-shuffle button for Other posts section */
-.other-posts-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 1rem;
-	margin-bottom: 0.5rem;
-}
-
-.reshuffle-btn {
-	font-size: 0.75rem;
-	padding: 0.25rem 0.6rem;
-	border: 1px solid var(--border);
-	background: var(--surface);
-	color: var(--text-muted);
-	border-radius: 4px;
-	cursor: pointer;
-	transition: all 0.15s ease;
-}
-
-.reshuffle-btn:hover {
-	border-color: var(--accent);
-	color: var(--accent);
-}
-
-/* ============================================
-   Page Slide Transitions (View Transitions API)
-   ============================================ */
-
-/* Forward navigation (default) */
-::view-transition-old(root) {
-  animation: slide-out-left 0.4s ease forwards;
-}
-
-::view-transition-new(root) {
-  animation: slide-in-right 0.4s ease forwards;
-}
-
-/* Back navigation */
-html.back-transition ::view-transition-old(root) {
-  animation: slide-out-right 0.4s ease forwards;
-}
-
-html.back-transition ::view-transition-new(root) {
-  animation: slide-in-left 0.4s ease forwards;
-}
-
-@keyframes slide-out-left {
-  to {
-    transform: translateX(-25%);
-    opacity: 0;
-  }
-}
-
-@keyframes slide-in-right {
-  from {
-    transform: translateX(25%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-out-right {
-  to {
-    transform: translateX(25%);
-    opacity: 0;
-  }
-}
-
-@keyframes slide-in-left {
-  from {
-    transform: translateX(-25%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
 
 
